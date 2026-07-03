@@ -1,0 +1,14 @@
+node_modules
+.DS_Store
+dist
+*.local
+.env
+.env.*
+!.env.example
+.vscode
+.eslintcache
+coverage
+yarn-error.log
+snowflake.log
+*.dump
+.yarn

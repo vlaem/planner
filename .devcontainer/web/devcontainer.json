@@ -1,0 +1,47 @@
+{
+  "name": "web",
+  "build": {
+    "dockerfile": "./Dockerfile"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace/apps/web",
+  "customizations": {
+    "vscode": {
+      "extensions": ["vue.volar", "vitest.explorer", "oxc.oxc-vscode", "bradlc.vscode-tailwindcss"],
+      "settings": {
+        "explorer.fileNesting.enabled": true,
+        "explorer.fileNesting.patterns": {
+          "tsconfig.json": "tsconfig.*.json, env.d.ts",
+          "vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
+          "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .oxlint*, oxlint*"
+        },
+        "oxc.typeAware": true,
+        "oxc.fmt.configPath": ".oxfmtrc.json",
+        "editor.defaultFormatter": "oxc.oxc-vscode",
+        "editor.formatOnSave": true,
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
+        "[javascript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[vue]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "corepack yarn",
+  "remoteUser": "node",
+  "runArgs": ["--add-host=host.docker.internal:host-gateway"]
+}

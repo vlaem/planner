@@ -1,0 +1,46 @@
+{
+  "name": "planner-app",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "fmt": "oxfmt"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "dexie": "4.4.4",
+    "tailwindcss": "^4.3.2",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node24": "^24.0.4",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "^26.1.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vue/test-utils": "^2.4.11",
+    "@vue/tsconfig": "^0.9.1",
+    "jsdom": "^29.1.1",
+    "npm-run-all2": "^9.0.2",
+    "oxfmt": "^0.57.0",
+    "oxlint": "^1.72.0",
+    "oxlint-tsgolint": "^0.24.0",
+    "postcss": "^8.5.16",
+    "postcss-jit-props": "^1.0.16",
+    "typescript": "~6.0.3",
+    "vite": "^8.1.2",
+    "vite-plugin-oxlint": "^2.1.2",
+    "vite-plugin-pwa": "^1.3.0",
+    "vite-plugin-vue-devtools": "^8.1.5",
+    "vitest": "^4.1.9",
+    "vue-tsc": "^3.3.6"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "yarn@4.12.0"
+}

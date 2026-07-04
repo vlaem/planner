@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspace:cached
+    working_dir: /workspace/apps/api
+    command: sleep infinity
+  db:
+    build:      
+      context: .
+      dockerfile: Dockerfile.db
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  pgadmin:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgadmin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
+volumes:
+  postgres-data:
+  pgadmin-data:

@@ -1,0 +1,52 @@
+{
+  "name": "api",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "api",
+  "workspaceFolder": "/workspace/apps/api",
+  "forwardPorts": [8002, "pgadmin:80"],
+  "portsAttributes": {
+    "8002": {
+      "label": "api"
+    },
+    "pgadmin:80": {
+      "label": "pgAdmin"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["vitest.explorer", "oxc.oxc-vscode"],
+      "settings": {
+        "explorer.fileNesting.enabled": true,
+        "explorer.fileNesting.patterns": {
+          "tsconfig.json": "tsconfig.*.json, env.d.ts",
+          "vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
+          "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .oxlint*, oxlint*"
+        },
+        "oxc.typeAware": true,
+        "oxc.fmt.configPath": ".oxfmtrc.json",
+        "editor.defaultFormatter": "oxc.oxc-vscode",
+        "editor.formatOnSave": true,
+        "[javascript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+  "shutdownAction": "stopCompose",
+  //"postCreateCommand": "corepack yarn",
+  "remoteUser": "node",
+  "remoteEnv": {
+    "NODE_ENV": "development",
+    "APP_ENV": "localhost",
+    "DATABASE_URL": "postgres://postgres:postgres@db:5432/my_app"
+  }
+}

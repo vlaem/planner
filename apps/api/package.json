@@ -3,10 +3,12 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.ts",
-    "start": "node src/web.ts"
+    "test:unit": "vitest --project unit-tests"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.6",
+    "@hono/zod-openapi": "^1.4.0",
+    "@scalar/hono-api-reference": "^0.11.8",
     "hono": "^4.12.27"
   },
   "devDependencies": {
@@ -15,7 +17,8 @@
     "oxlint": "^1.72.0",
     "oxlint-tsgolint": "^0.24.0",
     "tsx": "^4.22.4",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   },
   "engines": {
     "node": ">=24"

@@ -6,5 +6,7 @@ export const UserSchema = defineEntity({
     id: p.integer().primary().autoincrement(),
     email: p.string(),
     password: p.string().hidden().lazy(),
+    createdAt: p.datetime(),
+    updatedAt: p.datetime(),
   },
 });

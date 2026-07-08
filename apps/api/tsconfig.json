@@ -10,7 +10,11 @@
     "skipLibCheck": true,
     "types": ["node"],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "#infra/*": ["./src/infra/*"],
+      "#api/*": ["./src/api/*"]
+    }
   },
   "exclude": ["node_modules"]
 }

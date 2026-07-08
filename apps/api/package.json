@@ -1,6 +1,10 @@
 {
   "name": "planner-api",
   "type": "module",
+  "imports": {
+    "#api/*": "./src/api/*",
+    "#infra/*": "./src/infra/*"
+  },
   "scripts": {
     "dev": "node --watch src/index.ts",
     "test:unit": "vitest --project unit-tests"

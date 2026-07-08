@@ -1,8 +1,10 @@
-import { $, OpenAPIHono } from "@hono/zod-openapi";
+import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import { v1App } from "./v1/v1-api.ts";
+import { ormStorage } from "#infra/db/storage.ts";
+import { orm } from "#infra/db/mikro-orm.ts";
 
 export const app = new OpenAPIHono()
   .use(
@@ -16,6 +18,9 @@ export const app = new OpenAPIHono()
       credentials: true,
     }),
   )
+  .use("/*", (c, next) => {
+    return ormStorage.run(orm.em.fork({ useContext: true }), next);
+  })
   .route("/api/v1", v1App)
   .onError((err, c) => {
     if (err instanceof HTTPException) {

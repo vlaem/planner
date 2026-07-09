@@ -1,5 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
-
 export const Config = {
   get appEnv() {
     return process.env.APP_ENV ?? "localhost";

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Config } from "./config.ts";
 import { z } from "zod";
-import { Temporal } from "@js-temporal/polyfill";
+import { User } from "#domain/models/user.ts";
 
 export const TokenExpiredError = jwt.TokenExpiredError;
 
@@ -12,17 +12,14 @@ type Payload = {
   exp: number;
 };
 
-const GenerateTokenUserSchema = z
-  .object({
-    id: z.number().refine((id) => !!id, {
-      message: "An existing user which has an id is required",
-    }),
-    email: z.string(),
-  })
-  .loose();
+const GenerateTokenInputSchema = z.object({
+  user: z.instanceof(User).refine((user) => !!user.id, {
+    message: "An existing user which has an ID is required",
+  }),
+});
 
-export function generateToken(user: z.input<typeof GenerateTokenUserSchema>) {
-  GenerateTokenUserSchema.parse(user);
+export function generateToken(input: z.input<typeof GenerateTokenInputSchema>) {
+  GenerateTokenInputSchema.parse(input);
 
   const now = Temporal.Now.instant();
   const expiresAt = now.add(Config.JWT.duration);
@@ -30,8 +27,8 @@ export function generateToken(user: z.input<typeof GenerateTokenUserSchema>) {
   const exp = Math.trunc(expiresAt.epochMilliseconds / 1000);
 
   const payload: Payload = {
-    sub: user.id.toString(),
-    email: user.email,
+    sub: input.user.id.toString(),
+    email: input.user.email,
     iat,
     exp,
   };

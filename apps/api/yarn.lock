@@ -282,15 +282,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@js-temporal/polyfill@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@js-temporal/polyfill@npm:0.5.1"
-  dependencies:
-    jsbi: "npm:^4.3.0"
-  checksum: 10c0/d9a843e22167e6c98946dc03f8a480d062ece5d01ca850930c8f00af1bd99cfe513a98c3420b24a9920c47e7a61a82e5c8866da47ecdc0e7ee2cd3bf6e440b46
-  languageName: node
-  linkType: hard
-
 "@mikro-orm/cli@npm:^7.1.5":
   version: 7.1.5
   resolution: "@mikro-orm/cli@npm:7.1.5"
@@ -938,6 +929,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uid-safe@npm:^2":
+  version: 2.1.5
+  resolution: "@types/uid-safe@npm:2.1.5"
+  checksum: 10c0/e5c8d4526c9def5ce6d4a8699a7b835469e41dafbc1901e7928546186684e44e85f5535ea578c7535c90f72a69e6b999dc1e14fcbfd934bdc007beb9df769481
+  languageName: node
+  linkType: hard
+
 "@vitest/expect@npm:4.1.10":
   version: 4.1.10
   resolution: "@vitest/expect@npm:4.1.10"
@@ -1371,13 +1369,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsbi@npm:^4.3.0":
-  version: 4.3.2
-  resolution: "jsbi@npm:4.3.2"
-  checksum: 10c0/f8deb4fc1b1828ee9f90b19b778748f23877d63d437a083b4bead36c7b76c8d173b5dbe2a20cc5dc0217be5bde81791b696b104d5a40d7ede5fda34831d9fab6
-  languageName: node
-  linkType: hard
-
 "jsonwebtoken@npm:^9.0.3":
   version: 9.0.3
   resolution: "jsonwebtoken@npm:9.0.3"
@@ -1599,6 +1590,15 @@ __metadata:
   dependencies:
     "@jridgewell/sourcemap-codec": "npm:^1.5.5"
   checksum: 10c0/299378e38f9a270069fc62358522ddfb44e94244baa0d6a8980ab2a9b2490a1d03b236b447eee309e17eb3bddfa482c61259d47960eb018a904f0ded52780c4a
+  languageName: node
+  linkType: hard
+
+"mikro-orm-temporal@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "mikro-orm-temporal@npm:2.0.2"
+  peerDependencies:
+    "@mikro-orm/core": ^7.0.1
+  checksum: 10c0/cceeb7de449b97f8b9c129baa8c9102a8333bbb3493284104f88d74d6b50feac6c598778486ce58ad089088edd2823eb2697b1753a3272fec329e6c58363ac7c
   languageName: node
   linkType: hard
 
@@ -2023,7 +2023,6 @@ __metadata:
   dependencies:
     "@hono/node-server": "npm:^2.0.8"
     "@hono/zod-openapi": "npm:^1.4.0"
-    "@js-temporal/polyfill": "npm:^0.5.1"
     "@mikro-orm/cli": "npm:^7.1.5"
     "@mikro-orm/core": "npm:^7.1.5"
     "@mikro-orm/migrations": "npm:^7.1.5"
@@ -2031,14 +2030,18 @@ __metadata:
     "@scalar/hono-api-reference": "npm:^0.11.8"
     "@types/jsonwebtoken": "npm:^9"
     "@types/node": "npm:^26.1.0"
+    "@types/uid-safe": "npm:^2"
     argon2: "npm:^0.44.0"
     hono: "npm:^4.12.28"
     jsonwebtoken: "npm:^9.0.3"
+    mikro-orm-temporal: "npm:^2.0.2"
     oxfmt: "npm:^0.58.0"
     oxlint: "npm:^1.73.0"
     oxlint-tsgolint: "npm:^0.24.0"
+    temporal-polyfill: "npm:^1.0.1"
     tsx: "npm:^4.23.0"
     typescript: "npm:^6.0.3"
+    uid-safe: "npm:^2.1.5"
     vitest: "npm:^4.1.10"
     zod: "npm:^4.4.3"
   languageName: unknown
@@ -2110,6 +2113,13 @@ __metadata:
   version: 7.0.0
   resolution: "proc-log@npm:7.0.0"
   checksum: 10c0/b89c2d862604f35fec795477b0c7e376feab3ba0d4f4d291c4e959567442697cf451ac557d0623c1cc38af45a78128b983410f397a10c5d3a67f76c33de4754b
+  languageName: node
+  linkType: hard
+
+"random-bytes@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "random-bytes@npm:1.0.0"
+  checksum: 10c0/71e7a600e0976e9ebc269793a0577d47b965fa678fcc9e9623e427f909d1b3669db5b3a178dbf61229f0724ea23dba64db389f0be0ba675c6a6b837c02f29b8f
   languageName: node
   linkType: hard
 
@@ -2285,6 +2295,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"temporal-polyfill@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "temporal-polyfill@npm:1.0.1"
+  dependencies:
+    temporal-spec: "npm:1.0.0"
+    temporal-utils: "npm:1.0.1"
+  checksum: 10c0/a663055293ae334d95e7829508dc5c8b0a11eb8386760b0a5d9cd189c7e013c3b9d010b8e6f33c384ddede532feb506ff44e51f8a6cb00e90a0be6e689fc8947
+  languageName: node
+  linkType: hard
+
+"temporal-spec@npm:1.0.0":
+  version: 1.0.0
+  resolution: "temporal-spec@npm:1.0.0"
+  checksum: 10c0/16f24e418ed8f58f094752df2698db29153afed7f36cbbe5a889127ff86479a7f3e7338ed1480e3a96834f9613b55dbe45c74ac46a5a7fd1366ffb1f923e3338
+  languageName: node
+  linkType: hard
+
+"temporal-utils@npm:1.0.1":
+  version: 1.0.1
+  resolution: "temporal-utils@npm:1.0.1"
+  checksum: 10c0/cf229258c81f8283513ef7626f8089e23fb346d53b48d1c37581a11ca621ce4b65f3e0798565fa6f3c4fb48562202634adb343648350caad2e349eeae083d00b
+  languageName: node
+  linkType: hard
+
 "tinybench@npm:^2.9.0":
   version: 2.9.0
   resolution: "tinybench@npm:2.9.0"
@@ -2371,6 +2405,15 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/2f25c74e65663c248fa1ade2b8459d9ce5372ff9dad07067310f132966ebec1d93f6c42f0baf77a6b6a7a91460463f708e6887013aaade22111037457c6b25df
+  languageName: node
+  linkType: hard
+
+"uid-safe@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "uid-safe@npm:2.1.5"
+  dependencies:
+    random-bytes: "npm:~1.0.0"
+  checksum: 10c0/ec96862e859fd12175f3da7fda9d1359a2cf412fd521e10837cbdc6d554774079ce252f366981df9401283841c8924782f6dbee8f82a3a81f805ed8a8584595d
   languageName: node
   linkType: hard
 

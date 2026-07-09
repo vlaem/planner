@@ -1,12 +1,17 @@
-import { defineEntity, p } from "@mikro-orm/core";
-import { UserSchema } from "./user.schema.ts";
+import { EntitySchema } from "@mikro-orm/core";
+import { RefreshToken } from "#domain/models/refresh-token.ts";
+import { User } from "#domain/models/user.ts";
 
-export const RefreshToken = defineEntity({
-  name: "RefreshToken",
+export const RefreshTokenSchema = new EntitySchema({
+  class: RefreshToken,
   properties: {
-    id: p.string().primary(),
-    user: () => p.manyToOne(UserSchema),
-    createdAt: p.datetime(),
-    expiresAt: p.datetime(),
+    id: { type: "string", primary: true },
+    user: {
+      nullable: false,
+      kind: "m:1",
+      entity: () => User,
+    },
+    createdAt: { type: "datetime", onCreate: () => Date.now() },
+    expiresAt: { type: "datetime" },
   },
 });

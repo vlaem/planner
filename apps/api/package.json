@@ -4,7 +4,8 @@
   "imports": {
     "#api/*": "./src/api/*",
     "#infra/*": "./src/infra/*",
-    "#errors/*": "./src/errors/*"
+    "#errors/*": "./src/errors/*",
+    "#domain/*": "./src/domain/*"
   },
   "scripts": {
     "dev": "node --watch src/index.ts",
@@ -17,6 +18,7 @@
     "@mikro-orm/migrations": "^7.1.5",
     "@mikro-orm/postgresql": "^7.1.5",
     "@scalar/hono-api-reference": "^0.11.8",
+    "argon2": "^0.44.0",
     "hono": "^4.12.28"
   },
   "devDependencies": {
@@ -26,7 +28,7 @@
     "oxlint": "^1.73.0",
     "oxlint-tsgolint": "^0.24.0",
     "tsx": "^4.23.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "engines": {

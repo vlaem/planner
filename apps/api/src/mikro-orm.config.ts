@@ -13,6 +13,7 @@ const config: Partial<Options> = {
   },
   clientUrl: process.env.DATABASE_URL,
   extensions: [Migrator],
+  dynamicImportProvider: (id) => import(id),
 };
 
 export default config;

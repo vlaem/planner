@@ -13,6 +13,7 @@
     "jsxImportSource": "hono/jsx",
     "paths": {
       "#infra/*": ["./src/infra/*"],
+      "#domain/*": ["./src/domain/*"],
       "#api/*": ["./src/api/*"],
       "#errors/*": ["./src/errors/*"]
     }

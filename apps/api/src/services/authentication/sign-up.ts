@@ -36,6 +36,6 @@ export async function signUp(email: string, password: string) {
     email,
     password: await hashPassword(password),
   });
-<|
+
   await orm.em.flush();
 }

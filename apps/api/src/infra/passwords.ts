@@ -12,6 +12,6 @@ export function hashPassword(password: string): Promise<string> {
   return argon2.hash(password, argon2Options);
 }
 
-export function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+export function verifyPassword(storedHash: string, password: string): Promise<boolean> {
   return argon2.verify(storedHash, password);
 }

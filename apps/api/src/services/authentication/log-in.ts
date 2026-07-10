@@ -1,6 +1,6 @@
 import { User } from "#domain/models/user.ts";
 import { orm } from "#infra/db/mikro-orm.ts";
-import { hashPassword } from "#infra/passwords.ts";
+import { verifyPassword } from "#infra/passwords.ts";
 import { generateToken } from "#infra/jwt.ts";
 import { RefreshToken } from "#domain/models/refresh-token.ts";
 
@@ -9,31 +9,35 @@ interface SessionPayload {
   refreshToken: string;
 }
 
-export async function signUp(email: string, password: string): Promise<Result<SessionPayload>> {
-  const existingUser = await orm.em.findOne(
+export async function logIn(email: string, password: string): Promise<Result<SessionPayload>> {
+  const user = await orm.em.findOne(
     User,
     {
       email: email,
     },
     {
-      fields: ["id"],
+      populate: ["password"],
+      fields: ["id", "password"],
     },
   );
 
-  if (existingUser) {
+  if (!user) {
     return {
-      error: "Email is already taken",
+      error: "INVALID_USERNAME_OR_PASSWORD",
     } as Result<SessionPayload>;
   }
 
-  const newUser = orm.em.create(User, {
-    email,
-    password: await hashPassword(password),
-  });
+  const isVerified = await verifyPassword(user.password, password);
 
-  const refreshToken = RefreshToken.createFor(newUser);
+  if (!isVerified) {
+    return {
+      error: "INVALID_USERNAME_OR_PASSWORD",
+    } as Result<SessionPayload>;
+  }
+
+  const refreshToken = RefreshToken.createFor(user);
+
   orm.em.persist(refreshToken);
-
   await orm.em.flush();
 
   const { accessToken } = generateToken(refreshToken);

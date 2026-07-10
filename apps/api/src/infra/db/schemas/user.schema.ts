@@ -6,7 +6,7 @@ export const UserSchema = new EntitySchema({
   properties: {
     id: { type: "integer", primary: true, autoincrement: true },
     email: { type: "string" },
-    password: { type: "string" },
+    password: { type: "string", lazy: true },
     createdAt: { type: "datetime", onCreate: () => Date.now() },
     updatedAt: { type: "datetime", onCreate: () => Date.now(), onUpdate: () => Date.now() },
   },

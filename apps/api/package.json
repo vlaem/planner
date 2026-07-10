@@ -3,7 +3,8 @@
   "type": "module",
   "imports": {
     "#api/*": "./src/api/*",
-    "#infra/*": "./src/infra/*"
+    "#infra/*": "./src/infra/*",
+    "#errors/*": "./src/errors/*"
   },
   "scripts": {
     "dev": "node --watch src/index.ts",

@@ -1,13 +1,14 @@
 import { orm } from "#infra/db/mikro-orm.ts";
 import { generateToken } from "#infra/jwt.ts";
 import { RefreshToken } from "#domain/models/refresh-token.ts";
+import { InvalidRefreshTokenError } from "./errors.ts";
 
 interface SessionPayload {
   accessToken: string;
   refreshToken: string;
 }
 
-export async function refresh(refreshTokenId: string): Promise<Result2<SessionPayload>> {
+export async function refresh(refreshTokenId: string): Promise<SessionPayload> {
   const oldRefreshToken = await orm.em.findOne(RefreshToken, {
     id: refreshTokenId,
     expiresAt: {
@@ -16,9 +17,7 @@ export async function refresh(refreshTokenId: string): Promise<Result2<SessionPa
   });
 
   if (!oldRefreshToken) {
-    return {
-      error: "INVALID_REFRESH_TOKEN",
-    };
+    throw new InvalidRefreshTokenError();
   }
 
   const newRefreshToken = RefreshToken.extendFrom(oldRefreshToken);
@@ -34,10 +33,4 @@ export async function refresh(refreshTokenId: string): Promise<Result2<SessionPa
     accessToken,
     refreshToken: newRefreshToken.id,
   };
-}
-
-const test = await refresh("123");
-
-if ("error" in test) {
-} else {
 }

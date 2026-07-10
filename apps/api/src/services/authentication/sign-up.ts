@@ -3,13 +3,14 @@ import { orm } from "#infra/db/mikro-orm.ts";
 import { hashPassword } from "#infra/passwords.ts";
 import { generateToken } from "#infra/jwt.ts";
 import { RefreshToken } from "#domain/models/refresh-token.ts";
+import { EmailAlreadyTakenError } from "./errors.ts";
 
 interface SessionPayload {
   accessToken: string;
   refreshToken: string;
 }
 
-export async function signUp(email: string, password: string): Promise<Result<SessionPayload>> {
+export async function signUp(email: string, password: string): Promise<SessionPayload> {
   const existingUser = await orm.em.findOne(
     User,
     {
@@ -21,9 +22,7 @@ export async function signUp(email: string, password: string): Promise<Result<Se
   );
 
   if (existingUser) {
-    return {
-      error: "Email is already taken",
-    } as Result<SessionPayload>;
+    throw new EmailAlreadyTakenError();
   }
 
   const newUser = orm.em.create(User, {
@@ -39,9 +38,7 @@ export async function signUp(email: string, password: string): Promise<Result<Se
   const { accessToken } = generateToken(refreshToken);
 
   return {
-    result: {
-      accessToken,
-      refreshToken: refreshToken.id,
-    },
-  } as Result<SessionPayload>;
+    accessToken,
+    refreshToken: refreshToken.id,
+  };
 }

@@ -4,6 +4,16 @@ import { hashPassword } from "#infra/passwords.ts";
 import { generateToken } from "#infra/jwt.ts";
 import { RefreshToken } from "#domain/models/refresh-token.ts";
 
+type Result<T> =
+  | {
+      error: never;
+      result: T;
+    }
+  | {
+      error: string;
+      result: never;
+    };
+
 interface ErrorResult {
   error: string;
 }
@@ -15,11 +25,9 @@ interface SessionPayload {
   refreshTokenExpiresAt: Temporal.Instant;
 }
 
-export async function signUp(
-  email: string,
-  password: string,
-): Promise<SessionPayload | ErrorResult> {
-  const existingUser = await orm.em.getRepository(User).findOne(
+export async function signUp(email: string, password: string): Promise<Result<SessionPayload>> {
+  const existingUser = await orm.em.findOne(
+    User,
     {
       email: email,
     },
@@ -31,7 +39,7 @@ export async function signUp(
   if (existingUser) {
     return {
       error: "Email is already taken",
-    } as ErrorResult;
+    } as Result<SessionPayload>;
   }
 
   const newUser = orm.em.create(User, {
@@ -47,9 +55,11 @@ export async function signUp(
   const { accessToken, expiresAt } = generateToken(refreshToken);
 
   return {
-    accessToken,
-    accessTokenExpiresAt: expiresAt,
-    refreshToken: refreshToken.id,
-    refreshTokenExpiresAt: refreshToken.expiresAt,
-  } as SessionPayload;
+    result: {
+      accessToken,
+      accessTokenExpiresAt: expiresAt,
+      refreshToken: refreshToken.id,
+      refreshTokenExpiresAt: refreshToken.expiresAt,
+    },
+  } as Result<SessionPayload>;
 }

@@ -1,6 +1,7 @@
 import { describe, vi, it, expect } from "vitest";
 import jwt from "jsonwebtoken";
 import { generateToken, decodeToken } from "./jwt.ts";
+import { User } from "#domain/models/user.ts";
 
 vi.mock("./cofig.ts", () => ({
   Config: {
@@ -34,11 +35,13 @@ describe("jwt", () => {
 
       vi.mocked(jwt.sign).mockImplementation(() => "generated-token");
 
+      const user = new (User as any)();
+      user.id = 1;
+      user.email = "test@test.io";
+
       const result = generateToken({
-        id: 1,
-        email: "test@test.io",
-        otherField: "other",
-      } as any);
+        user,
+      });
 
       expect(result.accessToken).toEqual("generated-token");
       expect(result.expiresAt).toBeDefined();

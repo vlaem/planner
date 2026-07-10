@@ -1,6 +1,7 @@
 import { describe, vi, it, expect } from "vitest";
 import { signUp } from "./sign-up.ts";
 import { orm } from "#infra/db/mikro-orm.ts";
+import { EmailAlreadyTakenError } from "./errors.ts";
 
 vi.mock("#infra/db/mikro-orm.ts");
 
@@ -11,9 +12,9 @@ describe("sign-up", () => {
         id: 1,
       } as any);
 
-      const result = await signUp("test@email.io", "testpassword");
-
-      expect(result.error).toBeDefined();
+      await expect(() => signUp("test@email.io", "testpassword")).rejects.toThrow(
+        EmailAlreadyTakenError,
+      );
     });
   });
 });

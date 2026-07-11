@@ -2,9 +2,11 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
-import { v1App } from "./v1/v1-api.ts";
-import { ormStorage } from "#infra/db/storage.ts";
+
 import { orm } from "#infra/db/mikro-orm.ts";
+import { ormStorage } from "#infra/db/storage.ts";
+
+import { v1App } from "./v1/v1-api.ts";
 
 export const app = new OpenAPIHono()
   .use(

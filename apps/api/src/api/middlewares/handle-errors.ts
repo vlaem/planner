@@ -1,5 +1,6 @@
 import type { ErrorHandler } from "hono";
 import { HTTPException } from "hono/http-exception";
+
 import { CodedError } from "#errors/base.ts";
 import { getStatusCode } from "#errors/mapping.ts";
 

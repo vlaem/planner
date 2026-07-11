@@ -1,6 +1,6 @@
+import { Migrator } from "@mikro-orm/migrations";
 import type { Options } from "@mikro-orm/postgresql";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Migrator } from "@mikro-orm/migrations";
 
 const config: Partial<Options> = {
   entitiesTs: ["./src/infra/db/schemas/*.schema.ts"],

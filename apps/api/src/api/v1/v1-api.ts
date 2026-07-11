@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { HealthRoute } from "./health.ts";
+
 import { AuthenticationRoute } from "./authentication.ts";
+import { HealthRoute } from "./health.ts";
 
 export const v1App = new OpenAPIHono()
   .route("/health", HealthRoute)

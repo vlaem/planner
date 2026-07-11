@@ -1,14 +1,11 @@
+import { RefreshToken } from "#domain/models/refresh-token.ts";
 import { User } from "#domain/models/user.ts";
 import { orm } from "#infra/db/mikro-orm.ts";
-import { verifyPassword } from "#infra/passwords.ts";
 import { generateToken } from "#infra/jwt.ts";
-import { RefreshToken } from "#domain/models/refresh-token.ts";
-import { InvalidUsernameOrPasswordError } from "./errors.ts";
+import { verifyPassword } from "#infra/passwords.ts";
 
-interface SessionPayload {
-  accessToken: string;
-  refreshToken: string;
-}
+import { InvalidUsernameOrPasswordError } from "./errors.ts";
+import type { SessionPayload } from "./types.ts";
 
 export async function logIn(email: string, password: string): Promise<SessionPayload> {
   const user = await orm.em.findOne(

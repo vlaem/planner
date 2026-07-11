@@ -1,10 +1,12 @@
 import { describe, vi, it, expect } from "vitest";
-import { signUp } from "./sign-up.ts";
-import { orm } from "#infra/db/mikro-orm.ts";
-import { EmailAlreadyTakenError } from "./errors.ts";
-import { User } from "#domain/models/user.ts";
+
 import { RefreshToken } from "#domain/models/refresh-token.ts";
+import { User } from "#domain/models/user.ts";
+import { orm } from "#infra/db/mikro-orm.ts";
 import { generateToken } from "#infra/jwt.ts";
+
+import { EmailAlreadyTakenError } from "./errors.ts";
+import { signUp } from "./sign-up.ts";
 
 vi.mock("#infra/db/mikro-orm.ts");
 vi.mock("#infra/jwt.ts");
@@ -26,9 +28,6 @@ describe("sign-up", () => {
       newRefreshToken.id = "generated-refresh-token-id";
 
       vi.mocked(orm.em.findOne).mockResolvedValueOnce(null);
-      vi.mocked(orm.em.transactional).mockImplementationOnce(async (fn) => {
-        return await fn(orm.em);
-      });
       vi.spyOn(RefreshToken, "createFor").mockReturnValueOnce(newRefreshToken);
       vi.mocked(orm.em.create).mockResolvedValueOnce(newUser);
       vi.mocked(generateToken).mockReturnValueOnce({
@@ -38,6 +37,7 @@ describe("sign-up", () => {
 
       const result = await signUp("test@email.io", "testpassword");
 
+      expect(orm.em.flush).toHaveBeenCalled();
       expect(result).toBeDefined();
       expect(result).toMatchObject({
         accessToken: "generated-access-token",

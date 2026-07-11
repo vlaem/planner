@@ -1,12 +1,9 @@
+import { RefreshToken } from "#domain/models/refresh-token.ts";
 import { orm } from "#infra/db/mikro-orm.ts";
 import { generateToken } from "#infra/jwt.ts";
-import { RefreshToken } from "#domain/models/refresh-token.ts";
-import { InvalidRefreshTokenError } from "./errors.ts";
 
-interface SessionPayload {
-  accessToken: string;
-  refreshToken: string;
-}
+import { InvalidRefreshTokenError } from "./errors.ts";
+import type { SessionPayload } from "./types.ts";
 
 export async function refresh(refreshTokenId: string): Promise<SessionPayload> {
   const oldRefreshToken = await orm.em.findOne(RefreshToken, {
@@ -20,12 +17,14 @@ export async function refresh(refreshTokenId: string): Promise<SessionPayload> {
     throw new InvalidRefreshTokenError();
   }
 
-  const newRefreshToken = RefreshToken.extendFrom(oldRefreshToken);
+  const newRefreshToken = await orm.em.transactional(async (em) => {
+    const newRefreshToken = RefreshToken.extendFrom(oldRefreshToken);
 
-  orm.em.persist(newRefreshToken);
-  orm.em.remove(oldRefreshToken);
+    em.persist(newRefreshToken);
+    em.remove(oldRefreshToken);
 
-  await orm.em.flush();
+    return newRefreshToken;
+  });
 
   const { accessToken } = generateToken(newRefreshToken);
 

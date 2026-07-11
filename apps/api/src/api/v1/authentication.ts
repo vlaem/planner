@@ -1,5 +1,5 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import { setCookie, getCookie } from "hono/cookie";
+import { setCookie, getCookie, deleteCookie } from "hono/cookie";
 
 import {
   EmailAlreadyTakenError,
@@ -7,8 +7,11 @@ import {
   InvalidUsernameOrPasswordError,
 } from "#app/authentication/errors.ts";
 import { logIn } from "#app/authentication/log-in.ts";
+import { logout } from "#app/authentication/log-out.ts";
 import { refresh } from "#app/authentication/refresh.ts";
 import { signUp } from "#app/authentication/sign-up.ts";
+
+const REFRESH_COOKIE_NAME = "__Secure-refresh-token";
 
 export const AuthenticationRoute = new OpenAPIHono()
   .openapi(
@@ -45,7 +48,7 @@ export const AuthenticationRoute = new OpenAPIHono()
       try {
         const { accessToken, refreshToken, refreshTokenExpiresIn } = await signUp(email, password);
 
-        setCookie(c, "__Host-refresh-token", refreshToken, {
+        setCookie(c, REFRESH_COOKIE_NAME, refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "Lax",
@@ -95,7 +98,7 @@ export const AuthenticationRoute = new OpenAPIHono()
       },
       responses: {
         200: {
-          description: "Log in successful",
+          description: "Login successful",
         },
         400: {
           description: "Invalid username or password.",
@@ -106,7 +109,7 @@ export const AuthenticationRoute = new OpenAPIHono()
       const { email, password } = c.req.valid("json");
       try {
         const { accessToken, refreshToken, refreshTokenExpiresIn } = await logIn(email, password);
-        setCookie(c, "__Host-refresh-token", refreshToken, {
+        setCookie(c, REFRESH_COOKIE_NAME, refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "Lax",
@@ -140,42 +143,9 @@ export const AuthenticationRoute = new OpenAPIHono()
       tags: ["Authentication"],
       method: "post",
       path: "refresh",
-      request: {
-        body: {
-          required: true,
-          description: "Refresh",
-          content: {
-            "application/json": {
-              schema: z.object({
-                refreshToken: z.string(),
-              }),
-            },
-          },
-        },
-      },
       responses: {
-        500: {
-          description: "Not Implemented",
-        },
-      },
-    }),
-    async (c) => {
-      return c.json(
-        {
-          message: "Not Implemented",
-        },
-        500,
-      );
-    },
-  )
-  .openapi(
-    createRoute({
-      tags: ["Authentication"],
-      method: "post",
-      path: "logout",
-      responses: {
-        500: {
-          description: "Not Implemented",
+        200: {
+          description: "Refresh successful.",
         },
       },
     }),
@@ -195,7 +165,7 @@ export const AuthenticationRoute = new OpenAPIHono()
         const { accessToken, refreshToken, refreshTokenExpiresIn } =
           await refresh(prevRefreshToken);
 
-        setCookie(c, "__Host-refresh-token", refreshToken, {
+        setCookie(c, REFRESH_COOKIE_NAME, refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "Lax",
@@ -221,5 +191,31 @@ export const AuthenticationRoute = new OpenAPIHono()
 
         throw ex;
       }
+    },
+  )
+  .openapi(
+    createRoute({
+      tags: ["Authentication"],
+      method: "post",
+      path: "logout",
+      responses: {
+        204: {
+          description: "Logout successful.",
+        },
+      },
+    }),
+    async (c) => {
+      const refreshToken = getCookie(c, REFRESH_COOKIE_NAME);
+
+      if (refreshToken) {
+        await logout(refreshToken);
+      }
+
+      deleteCookie(c, REFRESH_COOKIE_NAME, {
+        secure: true,
+        path: "/v1/auth",
+      });
+
+      return c.body(null, 204);
     },
   );

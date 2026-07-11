@@ -1,5 +1,8 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
+import { EmailAlreadyTakenError } from "#app/authentication/errors.ts";
+import { signUp } from "#app/authentication/sign-up.ts";
+
 export const AuthenticationRoute = new OpenAPIHono()
   .openapi(
     createRoute({
@@ -13,8 +16,8 @@ export const AuthenticationRoute = new OpenAPIHono()
           content: {
             "application/json": {
               schema: z.object({
-                email: z.email().trim(),
-                password: z.string(),
+                email: z.email().toLowerCase().trim(),
+                password: z.string().min(8),
               }),
             },
           },
@@ -27,12 +30,29 @@ export const AuthenticationRoute = new OpenAPIHono()
       },
     }),
     async (c) => {
-      return c.json(
-        {
-          message: "Not Implemented",
-        },
-        500,
-      );
+      const { email, password } = c.req.valid("json");
+
+      try {
+        const { accessToken, refreshToken } = await signUp(email, password);
+        return c.json(
+          {
+            message: "Not Implemented",
+          },
+          500,
+        );
+      } catch (ex) {
+        if (ex instanceof EmailAlreadyTakenError) {
+          return c.json(
+            {
+              code: ex.code,
+              message: ex.message,
+            },
+            400,
+          );
+        }
+
+        throw ex;
+      }
     },
   )
   .openapi(

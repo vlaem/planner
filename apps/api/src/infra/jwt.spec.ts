@@ -1,7 +1,9 @@
-import { describe, vi, it, expect } from "vitest";
 import jwt from "jsonwebtoken";
-import { generateToken, decodeToken } from "./jwt.ts";
+import { describe, vi, it, expect } from "vitest";
+
 import { User } from "#domain/models/user.ts";
+
+import { generateToken, decodeToken } from "./jwt.ts";
 
 vi.mock("./cofig.ts", () => ({
   Config: {

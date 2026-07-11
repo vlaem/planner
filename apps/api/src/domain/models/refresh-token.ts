@@ -1,5 +1,6 @@
-import type { User } from "./user.ts";
 import { OptionalProps, PrimaryKeyProp, type Reference, type Loaded } from "@mikro-orm/core";
+
+import type { User } from "./user.ts";
 
 const REFRESH_TOKEN_EXPIRY_DURATION = Temporal.Duration.from({ days: 30 });
 const REFRESH_TOKEN_EXTEND_DURATION = Temporal.Duration.from({ days: 15 });

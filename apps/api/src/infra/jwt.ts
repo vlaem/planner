@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
-import { Config } from "./config.ts";
 import { z } from "zod";
+
 import { User } from "#domain/models/user.ts";
+
+import { Config } from "./config.ts";
 
 export const TokenExpiredError = jwt.TokenExpiredError;
 

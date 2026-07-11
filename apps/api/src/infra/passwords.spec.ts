@@ -1,6 +1,7 @@
-import { describe, vi, it, expect } from "vitest";
-import { hashPassword, verifyPassword } from "./passwords.ts";
 import * as argon2 from "argon2";
+import { describe, vi, it, expect } from "vitest";
+
+import { hashPassword, verifyPassword } from "./passwords.ts";
 
 vi.mock("argon2");
 

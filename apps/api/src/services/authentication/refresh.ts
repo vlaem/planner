@@ -17,14 +17,11 @@ export async function refresh(refreshTokenId: string): Promise<SessionPayload> {
     throw new InvalidRefreshTokenError();
   }
 
-  const newRefreshToken = await orm.em.transactional(async (em) => {
-    const newRefreshToken = RefreshToken.extendFrom(oldRefreshToken);
+  const newRefreshToken = RefreshToken.extendFrom(oldRefreshToken);
 
-    em.persist(newRefreshToken);
-    em.remove(oldRefreshToken);
-
-    return newRefreshToken;
-  });
+  orm.em.persist(newRefreshToken);
+  orm.em.remove(oldRefreshToken);
+  await orm.em.flush();
 
   const { accessToken } = generateToken(newRefreshToken);
 

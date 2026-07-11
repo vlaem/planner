@@ -1,8 +1,9 @@
 import { EntitySchema } from "@mikro-orm/core";
-import { RefreshToken } from "#domain/models/refresh-token.ts";
-import { User } from "#domain/models/user.ts";
 import { InstantType } from "mikro-orm-temporal";
 import uidSafe from "uid-safe";
+
+import { RefreshToken } from "#domain/models/refresh-token.ts";
+import { User } from "#domain/models/user.ts";
 
 export const RefreshTokenSchema = new EntitySchema({
   class: RefreshToken,

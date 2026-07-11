@@ -1,4 +1,5 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
+import { setCookie } from "hono/cookie";
 
 import { EmailAlreadyTakenError } from "#app/authentication/errors.ts";
 import { signUp } from "#app/authentication/sign-up.ts";
@@ -33,12 +34,21 @@ export const AuthenticationRoute = new OpenAPIHono()
       const { email, password } = c.req.valid("json");
 
       try {
-        const { accessToken, refreshToken } = await signUp(email, password);
+        const { accessToken, refreshToken, refreshTokenExpiresIn } = await signUp(email, password);
+
+        setCookie(c, "__Host-refresh-token", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "Lax",
+          path: "/",
+          maxAge: Math.trunc(refreshTokenExpiresIn.milliseconds / 1000),
+        });
+
         return c.json(
           {
-            message: "Not Implemented",
+            accessToken,
           },
-          500,
+          201,
         );
       } catch (ex) {
         if (ex instanceof EmailAlreadyTakenError) {

@@ -2,8 +2,8 @@ import { OptionalProps, PrimaryKeyProp, type Reference, type Loaded } from "@mik
 
 import type { User } from "./user.ts";
 
-const REFRESH_TOKEN_EXPIRY_DURATION = Temporal.Duration.from({ days: 30 });
-const REFRESH_TOKEN_EXTEND_DURATION = Temporal.Duration.from({ days: 15 });
+const REFRESH_TOKEN_EXPIRY_DURATION = Temporal.Duration.from({ hours: 24 * 30 });
+const REFRESH_TOKEN_EXTEND_DURATION = Temporal.Duration.from({ hours: 24 * 15 });
 
 export class RefreshToken {
   [OptionalProps]?: "id" | "createdAt";
@@ -14,15 +14,15 @@ export class RefreshToken {
     refreshToken.user = user as User;
     refreshToken.expiresAt = Temporal.Now.instant().add(REFRESH_TOKEN_EXPIRY_DURATION);
 
-    return refreshToken;
+    return { refreshToken, expiresIn: REFRESH_TOKEN_EXPIRY_DURATION };
   }
 
   static extendFrom(previousRefreshToken: RefreshToken) {
-    const newRefreshToken = new RefreshToken();
-    newRefreshToken.user = previousRefreshToken.user;
-    newRefreshToken.expiresAt = previousRefreshToken.expiresAt.add(REFRESH_TOKEN_EXTEND_DURATION);
+    const refreshToken = new RefreshToken();
+    refreshToken.user = previousRefreshToken.user;
+    refreshToken.expiresAt = previousRefreshToken.expiresAt.add(REFRESH_TOKEN_EXTEND_DURATION);
 
-    return newRefreshToken;
+    return { refreshToken, expiresIn: REFRESH_TOKEN_EXPIRY_DURATION };
   }
 
   id!: string;

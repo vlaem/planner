@@ -22,9 +22,13 @@ describe("refresh", () => {
       const prevRefreshToken = new (RefreshToken as any)();
       const newRefreshToken = new (RefreshToken as any)();
       newRefreshToken.id = "generated-refresh-token-id";
+      const expiresIn = new Temporal.Duration(1);
 
       vi.mocked(orm.em.findOne).mockResolvedValueOnce(prevRefreshToken);
-      vi.spyOn(RefreshToken, "extendFrom").mockReturnValueOnce(newRefreshToken);
+      vi.spyOn(RefreshToken, "extendFrom").mockReturnValueOnce({
+        refreshToken: newRefreshToken,
+        expiresIn,
+      });
       vi.mocked(generateToken).mockReturnValueOnce({
         accessToken: "generated-access-token",
         expiresAt: Temporal.Now.instant(),
@@ -37,6 +41,7 @@ describe("refresh", () => {
       expect(result).toMatchObject({
         accessToken: "generated-access-token",
         refreshToken: "generated-refresh-token-id",
+        refreshTokenExpiresIn: expect.any(Temporal.Duration),
       });
     });
   });

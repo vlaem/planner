@@ -29,7 +29,7 @@ export async function logIn(email: string, password: string): Promise<SessionPay
     throw new InvalidUsernameOrPasswordError();
   }
 
-  const refreshToken = RefreshToken.createFor(user);
+  const { refreshToken, expiresIn } = RefreshToken.createFor(user);
 
   orm.em.persist(refreshToken);
   await orm.em.flush();
@@ -39,5 +39,6 @@ export async function logIn(email: string, password: string): Promise<SessionPay
   return {
     accessToken,
     refreshToken: refreshToken.id,
+    refreshTokenExpiresIn: expiresIn,
   };
 }

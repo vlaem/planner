@@ -27,7 +27,7 @@ export async function signUp(email: string, password: string): Promise<SessionPa
     password: await hashPassword(password),
   });
 
-  const refreshToken = RefreshToken.createFor(newUser);
+  const { refreshToken, expiresIn } = RefreshToken.createFor(newUser);
   orm.em.persist(refreshToken);
 
   await orm.em.flush();
@@ -37,5 +37,6 @@ export async function signUp(email: string, password: string): Promise<SessionPa
   return {
     accessToken,
     refreshToken: refreshToken.id,
+    refreshTokenExpiresIn: expiresIn,
   };
 }

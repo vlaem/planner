@@ -37,10 +37,14 @@ describe("log-in", () => {
       user.password = "hashed";
       const newRefreshToken = new (RefreshToken as any)();
       newRefreshToken.id = "generated-refresh-token-id";
+      const expiresIn = new Temporal.Duration(1);
 
       vi.mocked(orm.em.findOne).mockResolvedValueOnce(user);
       vi.mocked(verifyPassword).mockResolvedValueOnce(true);
-      vi.spyOn(RefreshToken, "createFor").mockReturnValueOnce(newRefreshToken);
+      vi.spyOn(RefreshToken, "createFor").mockReturnValueOnce({
+        refreshToken: newRefreshToken,
+        expiresIn,
+      });
       vi.mocked(generateToken).mockReturnValueOnce({
         accessToken: "generated-access-token",
         expiresAt: Temporal.Now.instant(),
@@ -53,6 +57,7 @@ describe("log-in", () => {
       expect(result).toMatchObject({
         accessToken: "generated-access-token",
         refreshToken: "generated-refresh-token-id",
+        refreshTokenExpiresIn: expect.any(Temporal.Duration),
       });
     });
   });

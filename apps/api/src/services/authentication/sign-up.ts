@@ -25,15 +25,16 @@ export async function signUp(email: string, password: string): Promise<SessionPa
     throw new EmailAlreadyTakenError();
   }
 
-  const newUser = orm.em.create(User, {
-    email,
-    password: await hashPassword(password),
+  const refreshToken = await orm.em.transactional(async (em) => {
+    const newUser = em.create(User, {
+      email,
+      password: await hashPassword(password),
+    });
+
+    const refreshToken = RefreshToken.createFor(newUser);
+    em.persist(refreshToken);
+    return refreshToken;
   });
-
-  const refreshToken = RefreshToken.createFor(newUser);
-  orm.em.persist(refreshToken);
-
-  await orm.em.flush();
 
   const { accessToken } = generateToken(refreshToken);
 

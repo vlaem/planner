@@ -7,6 +7,7 @@ import {
   InvalidUsernameOrPasswordError,
 } from "#app/authentication/errors.ts";
 import { logIn } from "#app/authentication/log-in.ts";
+import { logout } from "#app/authentication/log-out.ts";
 import { refresh } from "#app/authentication/refresh.ts";
 import { signUp } from "#app/authentication/sign-up.ts";
 
@@ -15,6 +16,7 @@ import { AuthenticationRoute } from "./authentication.ts";
 vi.mock("#app/authentication/sign-up.ts");
 vi.mock("#app/authentication/log-in.ts");
 vi.mock("#app/authentication/refresh.ts");
+vi.mock("#app/authentication/log-out.ts");
 
 describe("AuthenticationRoute", () => {
   const client = testClient(AuthenticationRoute);
@@ -132,6 +134,8 @@ describe("AuthenticationRoute", () => {
           expect.stringContaining("__Secure-refresh-token=new-refresh-token"),
         ]),
       );
+
+      vi.mocked(refresh).mockClear();
     });
 
     it("should return 400 when the refresh token cookie is missing", async () => {
@@ -168,6 +172,47 @@ describe("AuthenticationRoute", () => {
       });
 
       expect(refresh).toHaveBeenCalledWith("refresh-token");
+    });
+  });
+  describe("logout", () => {
+    const cookie = "__Secure-refresh-token=refresh-token";
+
+    it("should invalidate the refresh token and delete the cookie", async () => {
+      vi.mocked(logout).mockResolvedValue(undefined);
+
+      const response = await client.logout.$post(
+        {},
+        {
+          headers: {
+            Cookie: cookie,
+          },
+        },
+      );
+
+      expect(response.status).toBe(204);
+      expect(await response.text()).toBe("");
+
+      expect(logout).toHaveBeenCalledOnce();
+      expect(logout).toHaveBeenCalledWith("refresh-token");
+
+      const setCookies = response.headers.getSetCookie();
+
+      expect(setCookies).toEqual(
+        expect.arrayContaining([expect.stringContaining("__Secure-refresh-token=")]),
+      );
+      vi.mocked(logout).mockClear();
+    });
+
+    it("should still return 204 when no refresh token cookie exists", async () => {
+      const response = await client.logout.$post({});
+
+      expect(response.status).toBe(204);
+      expect(logout).not.toHaveBeenCalled();
+
+      // The route still calls deleteRefreshTokenCookie().
+      expect(response.headers.getSetCookie()).toEqual(
+        expect.arrayContaining([expect.stringContaining("__Secure-refresh-token=")]),
+      );
     });
   });
 });

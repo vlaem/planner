@@ -219,7 +219,7 @@ export const AuthenticationRoute = new OpenAPIHono()
     }),
     async (c) => {
       const refreshToken = getRefreshTokenCookie(c);
-
+      console.log("refreshToken", refreshToken);
       if (refreshToken) {
         await logout(refreshToken);
       }

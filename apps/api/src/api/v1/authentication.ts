@@ -67,11 +67,12 @@ export const AuthenticationRoute = new OpenAPIHono()
           201,
         );
       } catch (ex) {
+        console.log("here");
         if (ex instanceof EmailAlreadyTakenError) {
           return c.json(
             {
-              code: ex.code,
-              message: ex.message,
+              code: "EMAIL_ALREADY_TAKEN",
+              message: "Email already taken.",
             },
             400,
           );

@@ -172,6 +172,7 @@ export const AuthenticationRoute = new OpenAPIHono()
       if (!prevRefreshToken) {
         return c.json(
           {
+            code: "INVALID_REFRESH_TOKEN",
             message: "Invalid refresh token.",
           },
           400,
@@ -194,6 +195,7 @@ export const AuthenticationRoute = new OpenAPIHono()
         if (ex instanceof InvalidRefreshTokenError) {
           return c.json(
             {
+              code: "INVALID_REFRESH_TOKEN",
               message: "Invalid refresh token.",
             },
             400,

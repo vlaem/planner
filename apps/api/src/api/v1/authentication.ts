@@ -58,11 +58,7 @@ export const AuthenticationRoute = new OpenAPIHono()
       try {
         const { accessToken, refreshToken, refreshTokenExpiresIn } = await signUp(email, password);
 
-        setRefreshTokenCookie(
-          c,
-          refreshToken,
-          Math.trunc(refreshTokenExpiresIn.milliseconds / 1000),
-        );
+        setRefreshTokenCookie(c, refreshToken, refreshTokenExpiresIn.total("seconds"));
 
         return c.json(
           {
@@ -125,11 +121,7 @@ export const AuthenticationRoute = new OpenAPIHono()
       try {
         const { accessToken, refreshToken, refreshTokenExpiresIn } = await logIn(email, password);
 
-        setRefreshTokenCookie(
-          c,
-          refreshToken,
-          Math.trunc(refreshTokenExpiresIn.milliseconds / 1000),
-        );
+        setRefreshTokenCookie(c, refreshToken, refreshTokenExpiresIn.total("seconds"));
 
         return c.json(
           {
@@ -189,11 +181,7 @@ export const AuthenticationRoute = new OpenAPIHono()
         const { accessToken, refreshToken, refreshTokenExpiresIn } =
           await refresh(prevRefreshToken);
 
-        setRefreshTokenCookie(
-          c,
-          refreshToken,
-          Math.trunc(refreshTokenExpiresIn.milliseconds / 1000),
-        );
+        setRefreshTokenCookie(c, refreshToken, refreshTokenExpiresIn.total("seconds"));
 
         return c.json(
           {

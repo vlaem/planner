@@ -134,8 +134,8 @@ export const AuthenticationRoute = new OpenAPIHono()
         if (ex instanceof InvalidUsernameOrPasswordError) {
           return c.json(
             {
-              code: ex.code,
-              message: ex.message,
+              code: "INVALID_USERNAME_OR_PASSWORD",
+              message: "Invalid username or password.",
             },
             400,
           );

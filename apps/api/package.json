@@ -31,10 +31,13 @@
     "@mikro-orm/cli": "^7.1.5",
     "@types/jsonwebtoken": "^9",
     "@types/node": "^26.1.0",
+    "@types/pg": "^8",
     "@types/uid-safe": "^2",
+    "dotenv-local": "^1.0.3",
     "oxfmt": "^0.58.0",
     "oxlint": "^1.73.0",
     "oxlint-tsgolint": "^0.24.0",
+    "pg": "^8.22.0",
     "tsx": "^4.23.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"

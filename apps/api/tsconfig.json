@@ -13,9 +13,12 @@
     "jsxImportSource": "hono/jsx",
     "paths": {
       "#infra/*": ["./src/infra/*"],
+      "#domain/*": ["./src/domain/*"],
       "#api/*": ["./src/api/*"],
-      "#errors/*": ["./src/errors/*"]
+      "#errors/*": ["./src/errors/*"],
+      "#app/*": ["./src/app/*"]
     }
   },
+  "include": ["src/**/*.ts", "tests/**/*.ts", "src/global.d.ts"],
   "exclude": ["node_modules"]
 }

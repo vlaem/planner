@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { HealthRoute } from "./health.ts";
 
 describe("GET /", () => {

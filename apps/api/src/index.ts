@@ -1,4 +1,6 @@
+import "temporal-polyfill/global";
 import { serve } from "@hono/node-server";
+
 import { app } from "./api/app.ts";
 
 serve(

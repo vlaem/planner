@@ -1,6 +1,6 @@
+import { Migrator } from "@mikro-orm/migrations";
 import type { Options } from "@mikro-orm/postgresql";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Migrator } from "@mikro-orm/migrations";
 
 const config: Partial<Options> = {
   entitiesTs: ["./src/infra/db/schemas/*.schema.ts"],
@@ -13,6 +13,7 @@ const config: Partial<Options> = {
   },
   clientUrl: process.env.DATABASE_URL,
   extensions: [Migrator],
+  dynamicImportProvider: (id) => import(id),
 };
 
 export default config;

@@ -4,30 +4,40 @@
   "imports": {
     "#api/*": "./src/api/*",
     "#infra/*": "./src/infra/*",
-    "#errors/*": "./src/errors/*"
+    "#app/*": "./src/app/*",
+    "#errors/*": "./src/errors/*",
+    "#domain/*": "./src/domain/*"
   },
   "scripts": {
     "dev": "node --watch src/index.ts",
     "test:unit": "vitest --project unit-tests"
   },
   "dependencies": {
-    "@hono/node-server": "^2.0.6",
+    "@hono/node-server": "^2.0.8",
     "@hono/zod-openapi": "^1.4.0",
     "@mikro-orm/core": "^7.1.5",
     "@mikro-orm/migrations": "^7.1.5",
     "@mikro-orm/postgresql": "^7.1.5",
     "@scalar/hono-api-reference": "^0.11.8",
-    "hono": "^4.12.27"
+    "argon2": "^0.44.0",
+    "hono": "^4.12.28",
+    "jsonwebtoken": "^9.0.3",
+    "mikro-orm-temporal": "^2.0.2",
+    "temporal-polyfill": "^1.0.1",
+    "uid-safe": "^2.1.5",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@mikro-orm/cli": "^7.1.5",
-    "@types/node": "^26.0.1",
-    "oxfmt": "^0.57.0",
-    "oxlint": "^1.72.0",
+    "@types/jsonwebtoken": "^9",
+    "@types/node": "^26.1.0",
+    "@types/uid-safe": "^2",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
     "oxlint-tsgolint": "^0.24.0",
-    "tsx": "^4.22.4",
+    "tsx": "^4.23.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">=24"

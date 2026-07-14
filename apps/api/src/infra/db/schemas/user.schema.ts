@@ -1,10 +1,14 @@
-import { defineEntity, p } from "@mikro-orm/core";
+import { EntitySchema } from "@mikro-orm/core";
 
-export const UserSchema = defineEntity({
-  name: "User",
+import { User } from "#domain/models/user.ts";
+
+export const UserSchema = new EntitySchema({
+  class: User,
   properties: {
-    id: p.integer().primary().autoincrement(),
-    email: p.string(),
-    password: p.string().hidden().lazy(),
+    id: { type: "integer", primary: true, autoincrement: true },
+    email: { type: "string" },
+    password: { type: "string", lazy: true },
+    createdAt: { type: "datetime", onCreate: () => Date.now() },
+    updatedAt: { type: "datetime", onCreate: () => Date.now(), onUpdate: () => Date.now() },
   },
 });

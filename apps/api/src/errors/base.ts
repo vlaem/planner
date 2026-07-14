@@ -7,8 +7,6 @@ type CodedErrorOptions = {
 export abstract class CodedError extends Error {
   abstract readonly code: string;
 
-  readonly exposeMessage: boolean = true;
-
   constructor(message: string, options: CodedErrorOptions = {}) {
     super(message, {
       cause: options.cause,

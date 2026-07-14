@@ -10,7 +10,8 @@
   },
   "scripts": {
     "dev": "node --watch src/index.ts",
-    "test:unit": "vitest --project unit-tests"
+    "test:unit": "vitest --project unit-tests",
+    "test:integration": "vitest --project integration-tests"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.8",

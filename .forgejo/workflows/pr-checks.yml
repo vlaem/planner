@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   api-unit-tests:
-    runs-on: node-24
+    runs-on: node24
     defaults:
       runs:
         working-directory: ./apps/api

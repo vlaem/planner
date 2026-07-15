@@ -47,6 +47,7 @@
   "remoteEnv": {
     "NODE_ENV": "development",
     "APP_ENV": "localhost",
-    "DATABASE_URL": "postgres://postgres:postgres@db:5432/my_app"
+    "DATABASE_URL": "postgres://postgres:postgres@db:5432/my_app",
+    "INTEGRATION_POSTGRES_HOST": "db"
   }
 }

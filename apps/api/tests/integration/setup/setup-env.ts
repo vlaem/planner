@@ -1,5 +1,7 @@
 import * as dotenvlocal from "dotenv-local";
 
+import { getDatabaseConfig } from "./db-config.ts";
+
 const env = dotenvlocal.loadEnv({
   envPrefix: "INTEGRATION_",
   envInitial: {
@@ -16,3 +18,7 @@ for (const [key, value] of Object.entries(env)) {
     process.env[key] = value;
   }
 }
+
+const { connectionString } = getDatabaseConfig();
+
+process.env.DATABASE_URL = connectionString;

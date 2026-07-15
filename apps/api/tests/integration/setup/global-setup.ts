@@ -1,20 +1,25 @@
-import * as dotenvlocal from "dotenv-local";
+import "temporal-polyfill/global";
+import "./setup-env.ts";
+import "./setup-db.ts";
+import type { AddressInfo } from "node:net";
 
-export function setup() {
-  const env = dotenvlocal.loadEnv({
-    envPrefix: "INTEGRATION_",
-    envInitial: {
-      INTEGRATION_POSTGRES_DB: "home_integration_tests",
-      INTEGRATION_POSTGRES_HOST: "localhost",
-      INTEGRATION_POSTGRES_PORT: "5432",
-      INTEGRATION_POSTGRES_USER: "postgres",
-      INTEGRATION_POSTGRES_PASSWORD: "postgres",
-    },
+import { serve } from "@hono/node-server";
+
+import { app } from "#api/app.ts";
+import { orm } from "#infra/db/mikro-orm.ts";
+
+export default async function setup() {
+  const server = serve({
+    fetch: app.fetch,
+    port: 3000,
   });
 
-  console.log("process.env.TEST_VAR", process.env.TEST_VAR);
-}
+  const port = (server.address() as AddressInfo).port;
+  const baseUrl = `http://127.0.0.1:${port}`;
+  process.env.INTEGRATION_TESTS_BASE_URL = baseUrl;
 
-export function teardown() {
-  console.log("teardown");
+  return async () => {
+    server.close();
+    await orm.close();
+  };
 }

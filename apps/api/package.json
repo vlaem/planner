@@ -2,6 +2,7 @@
   "name": "planner-api",
   "type": "module",
   "imports": {
+    "#src/*": "./src/*",
     "#api/*": "./src/api/*",
     "#infra/*": "./src/infra/*",
     "#app/*": "./src/app/*",

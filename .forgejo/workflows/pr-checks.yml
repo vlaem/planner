@@ -42,3 +42,8 @@ jobs:
       - name: run tests
         run: yarn vitest run --project integration-tests
         working-directory: ./apps/api
+        env:
+          INTEGRATION_POSTGRES_HOST: postgres
+          INTEGRATION_POSTGRES_PORT: 5432
+          INTEGRATION_POSTGRES_USER: postgres
+          INTEGRATION_POSTGRES_PASSWORD: postgres        

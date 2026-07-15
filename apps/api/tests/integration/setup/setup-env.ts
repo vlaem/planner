@@ -21,4 +21,6 @@ for (const [key, value] of Object.entries(env)) {
 
 const { connectionString } = getDatabaseConfig();
 
+console.log("process.env.DATABASE_URL", process.env.DATABASE_URL);
 process.env.DATABASE_URL = connectionString;
+console.log("process.env.DATABASE_URL", process.env.DATABASE_URL);

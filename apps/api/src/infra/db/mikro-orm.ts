@@ -1,7 +1,10 @@
 import { MikroORM } from "@mikro-orm/core";
 
-import config from "../../mikro-orm.config.ts";
+import config from "#src/mikro-orm.config.ts";
+
+import { ormStorage } from "./storage.ts";
 
 export const orm = await MikroORM.init({
   ...config,
+  context: () => ormStorage.getStore(),
 });

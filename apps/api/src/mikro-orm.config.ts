@@ -1,3 +1,4 @@
+import "temporal-polyfill/global";
 import { Migrator } from "@mikro-orm/migrations";
 import type { Options } from "@mikro-orm/postgresql";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";

@@ -8,10 +8,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["node", "./types/vitest.shims.d.ts"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "paths": {
+      "#src/*": ["./src/*"],
       "#infra/*": ["./src/infra/*"],
       "#domain/*": ["./src/domain/*"],
       "#api/*": ["./src/api/*"],
@@ -19,6 +20,6 @@
       "#app/*": ["./src/app/*"]
     }
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "src/global.d.ts"],
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules"]
 }

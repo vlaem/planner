@@ -41,9 +41,9 @@ export const AuthenticationRoute = new OpenAPIHono()
           description: "Signup successful.",
           content: {
             "application/json": {
-              schema: {
+              schema: z.object({
                 accessToken: z.string(),
-              },
+              }),
             },
           },
         },
@@ -67,7 +67,7 @@ export const AuthenticationRoute = new OpenAPIHono()
           201,
         );
       } catch (ex) {
-        console.log("here");
+        console.log("here", ex);
         if (ex instanceof EmailAlreadyTakenError) {
           return c.json(
             {

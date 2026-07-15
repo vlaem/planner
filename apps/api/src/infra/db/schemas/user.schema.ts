@@ -3,6 +3,7 @@ import { EntitySchema } from "@mikro-orm/core";
 import { User } from "#domain/models/user.ts";
 
 export const UserSchema = new EntitySchema({
+  tableName: "users",
   class: User,
   properties: {
     id: { type: "integer", primary: true, autoincrement: true },

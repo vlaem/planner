@@ -6,8 +6,8 @@ import { RefreshToken } from "#domain/models/refresh-token.ts";
 import { User } from "#domain/models/user.ts";
 
 export const RefreshTokenSchema = new EntitySchema({
+  tableName: "refresh_tokens",
   class: RefreshToken,
-
   properties: {
     id: { type: "string", primary: true, onCreate: () => uidSafe.sync(32) },
     user: {

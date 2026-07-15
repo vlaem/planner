@@ -5,7 +5,7 @@
   ],
   "tables": [
     {
-      "name": "refresh_token",
+      "name": "refresh_tokens",
       "schema": "public",
       "columns": {
         "created_at": {
@@ -84,7 +84,7 @@
           ],
           "composite": false,
           "constraint": true,
-          "keyName": "refresh_token_pkey",
+          "keyName": "refresh_tokens_pkey",
           "primary": true,
           "unique": true
         }
@@ -92,23 +92,23 @@
       "checks": [],
       "triggers": [],
       "foreignKeys": {
-        "refresh_token_user_id_foreign": {
+        "refresh_tokens_user_id_foreign": {
           "columnNames": [
             "user_id"
           ],
-          "constraintName": "refresh_token_user_id_foreign",
-          "localTableName": "public.refresh_token",
+          "constraintName": "refresh_tokens_user_id_foreign",
+          "localTableName": "public.refresh_tokens",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
           "deleteRule": "cascade"
         }
       },
       "comment": null
     },
     {
-      "name": "user",
+      "name": "users",
       "schema": "public",
       "columns": {
         "created_at": {
@@ -204,7 +204,7 @@
           ],
           "composite": false,
           "constraint": true,
-          "keyName": "user_pkey",
+          "keyName": "users_pkey",
           "primary": true,
           "unique": true
         }

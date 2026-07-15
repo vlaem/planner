@@ -17,7 +17,7 @@ export async function signUp(email: string, password: string): Promise<SessionPa
       fields: ["id"],
     },
   );
-
+  console.log("test2");
   if (existingUser) {
     throw new EmailAlreadyTakenError();
   }

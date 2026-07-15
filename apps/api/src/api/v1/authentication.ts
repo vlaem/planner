@@ -56,8 +56,9 @@ export const AuthenticationRoute = new OpenAPIHono()
       const { email, password } = c.req.valid("json");
 
       try {
+        console.log("part1");
         const { accessToken, refreshToken, refreshTokenExpiresIn } = await signUp(email, password);
-
+        console.log("part2");
         setRefreshTokenCookie(c, refreshToken, refreshTokenExpiresIn.total("seconds"));
 
         return c.json(
@@ -67,7 +68,7 @@ export const AuthenticationRoute = new OpenAPIHono()
           201,
         );
       } catch (ex) {
-        console.log("here");
+        console.log("here", ex);
         if (ex instanceof EmailAlreadyTakenError) {
           return c.json(
             {

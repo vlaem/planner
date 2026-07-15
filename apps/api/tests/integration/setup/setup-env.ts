@@ -25,3 +25,4 @@ console.log("process.env.DATABASE_URL", process.env.DATABASE_URL);
 console.log("connectionString", connectionString);
 process.env.DATABASE_URL = connectionString;
 console.log("process.env.DATABASE_URL", process.env.DATABASE_URL);
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);

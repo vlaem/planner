@@ -17,7 +17,7 @@ const config: Partial<Options> = {
   dynamicImportProvider: (id) => import(id),
 };
 
-if (process.env.NODE_ENV === "test") {
+if (process.env.VITEST_DUMMY_OUT_CN === "true") {
   config.dbName = "dummy";
   config.clientUrl = undefined;
 }

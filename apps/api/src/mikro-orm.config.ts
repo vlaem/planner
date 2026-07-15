@@ -17,4 +17,9 @@ const config: Partial<Options> = {
   dynamicImportProvider: (id) => import(id),
 };
 
+if (process.env.NODE_ENV === "test") {
+  config.dbName = "dummy";
+  config.clientUrl = undefined;
+}
+
 export default config;

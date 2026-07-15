@@ -11,6 +11,7 @@ export default defineConfig({
           setupFiles: ["./tests/unit/setup.ts"],
           env: {
             NODE_ENV: "test",
+            DATABASE_URL: "//mock:mock@localhost:5432/mock_db",
           },
         },
       },
@@ -21,10 +22,6 @@ export default defineConfig({
           include: ["tests/integration/*.spec.ts"],
           globalSetup: ["./tests/integration/setup/global-setup.ts"],
           setupFiles: ["./tests/integration/setup/setup.ts"],
-          env: {
-            NODE_ENV: "test",
-            TEST_VAR: "test-var",
-          },
         },
       },
     ],

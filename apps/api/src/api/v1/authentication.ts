@@ -67,7 +67,6 @@ export const AuthenticationRoute = new OpenAPIHono()
           201,
         );
       } catch (ex) {
-        console.log("here", ex);
         if (ex instanceof EmailAlreadyTakenError) {
           return c.json(
             {
@@ -219,7 +218,6 @@ export const AuthenticationRoute = new OpenAPIHono()
     }),
     async (c) => {
       const refreshToken = getRefreshTokenCookie(c);
-      console.log("refreshToken", refreshToken);
       if (refreshToken) {
         await logout(refreshToken);
       }

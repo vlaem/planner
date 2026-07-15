@@ -88,7 +88,6 @@ describe("/api/v1/Health", () => {
         ]),
       );
     });
-
     describe("POST /refresh", () => {
       it("should return 200 and setup the new refresh-token while deleting the previous", async () => {
         const { existingUser, prevRefreshToken } = await orm.em.transactional(async (em) => {
@@ -101,7 +100,12 @@ describe("/api/v1/Health", () => {
             password: "-",
           });
 
-          const { refreshToken } = RefreshToken.createFor(user);
+          const refreshToken = em.create(RefreshToken, {
+            id: "IOWZVeqhA__FnC3EO4wga8rUIAqlt0gsep2lCfw20ao",
+            user: user,
+            expiresAt: Temporal.Now.instant().add({ minutes: 30 }),
+          });
+
           em.persist(refreshToken);
 
           return { existingUser: user, prevRefreshToken: refreshToken };
@@ -153,7 +157,7 @@ describe("/api/v1/Health", () => {
     });
     describe("POST /logout", () => {
       it("should return 204 and destroy the previous RefreshToken", async () => {
-        const { existingUser, prevRefreshToken } = await orm.em.transactional(async (em) => {
+        const { prevRefreshToken } = await orm.em.transactional(async (em) => {
           await orm.em.nativeDelete(User, {
             email: "logout-test@test.io",
           });
@@ -163,7 +167,12 @@ describe("/api/v1/Health", () => {
             password: "-",
           });
 
-          const { refreshToken } = RefreshToken.createFor(user);
+          const refreshToken = em.create(RefreshToken, {
+            id: "qUuN1mUHCZDTb3SaSGyQqJePl_yyvkfxAFdxWTEZ1Io",
+            user: user,
+            expiresAt: Temporal.Now.instant().add({ minutes: 30 }),
+          });
+
           em.persist(refreshToken);
 
           return { existingUser: user, prevRefreshToken: refreshToken };

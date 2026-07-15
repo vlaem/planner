@@ -19,6 +19,7 @@ export default async function setup(project: TestProject) {
 
   const port = (server.address() as AddressInfo).port;
   const baseUrl = `http://127.0.0.1:${port}`;
+
   process.env.INTEGRATION_TESTS_BASE_URL = baseUrl;
 
   project.onTestsRerun(async () => {

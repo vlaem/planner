@@ -101,7 +101,8 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user"
+          "referencedTableName": "public.user",
+          "deleteRule": "cascade"
         }
       },
       "comment": null

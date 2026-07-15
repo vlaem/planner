@@ -41,9 +41,9 @@ export const AuthenticationRoute = new OpenAPIHono()
           description: "Signup successful.",
           content: {
             "application/json": {
-              schema: {
+              schema: z.object({
                 accessToken: z.string(),
-              },
+              }),
             },
           },
         },
@@ -56,9 +56,8 @@ export const AuthenticationRoute = new OpenAPIHono()
       const { email, password } = c.req.valid("json");
 
       try {
-        console.log("part1");
         const { accessToken, refreshToken, refreshTokenExpiresIn } = await signUp(email, password);
-        console.log("part2");
+
         setRefreshTokenCookie(c, refreshToken, refreshTokenExpiresIn.total("seconds"));
 
         return c.json(

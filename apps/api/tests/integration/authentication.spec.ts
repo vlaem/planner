@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, assert } from "vitest";
 
 import { User } from "#src/domain/models/user.ts";
 import { orm } from "#src/infra/db/mikro-orm.ts";
@@ -12,14 +12,19 @@ describe("/api/v1/Health", () => {
         email: "signup-test@test.io",
       });
 
-      const result = await client.api.v1.auth.signup.$post({
+      const response = await client.api.v1.auth.signup.$post({
         json: {
           email: "signup-test@test.io",
           password: "valid-password",
         },
       });
 
-      expect(result.status).toBe(201);
+      assert(response.status == 201, "Response status is not 201");
+
+      const result = await response.json();
+      expect(result).toMatchObject({
+        accessToken: expect.any(String),
+      });
     });
   });
 });

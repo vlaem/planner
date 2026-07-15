@@ -21,7 +21,6 @@ export const app = new OpenAPIHono()
     }),
   )
   .use("/*", (c, next) => {
-    console.log("orm fork");
     return ormStorage.run(orm.em.fork({ useContext: true }), next);
   })
   .route("/api/v1", v1App)

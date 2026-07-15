@@ -7,14 +7,16 @@ import { User } from "#domain/models/user.ts";
 
 export const RefreshTokenSchema = new EntitySchema({
   class: RefreshToken,
+
   properties: {
     id: { type: "string", primary: true, onCreate: () => uidSafe.sync(32) },
     user: {
       nullable: false,
       kind: "m:1",
       entity: () => User,
+      deleteRule: "cascade",
     },
-    createdAt: { type: "datetime", onCreate: () => Date.now() },
+    createdAt: { type: "datetime", onCreate: () => new Date() },
     expiresAt: { type: InstantType },
   },
 });

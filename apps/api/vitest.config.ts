@@ -10,7 +10,7 @@ export default defineConfig({
           include: ["src/**/*.spec.ts"],
           setupFiles: ["./tests/unit/setup.ts"],
           env: {
-            NODE_ENV: "test",
+            VITEST_DUMMY_OUT_CN: "true",
           },
         },
       },

@@ -6,7 +6,6 @@ on:
 jobs:
   api-unit-tests:
     runs-on: node24
-        
     steps:
       - name: checkout code
         uses: actions/checkout@v6
@@ -19,3 +18,32 @@ jobs:
       - name: run tests
         run: yarn vitest run --project unit-tests
         working-directory: ./apps/api
+  api-integration-tests:
+    runs-on: node24
+    services:      
+      postgres:        
+        image: postgres:18.4-alpine
+        env:
+          POSTGRES_PASSWORD: postgres        
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps: 
+      - name: checkout code
+        uses: actions/checkout@v6
+      - name: Enable Corepack and set Yarn 4
+        run: |
+          corepack enable     
+      - name: install packages
+        run: yarn install --immutable
+        working-directory: ./apps/api
+      - name: run tests
+        run: yarn vitest run --project integration-tests
+        working-directory: ./apps/api
+        env:
+          INTEGRATION_POSTGRES_HOST: postgres
+          INTEGRATION_POSTGRES_PORT: 5432
+          INTEGRATION_POSTGRES_USER: postgres
+          INTEGRATION_POSTGRES_PASSWORD: postgres        
